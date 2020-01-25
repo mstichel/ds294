@@ -31,10 +31,6 @@ export default class LightsScreen extends React.Component {
 					...this.state,
 					switches: res.body
 				});
-
-				res.body.map((item, i) =>  {
-					console.log(item.ID);
-				});
 			});
 			
 		var dimmers = request
@@ -80,23 +76,24 @@ export default class LightsScreen extends React.Component {
 								{/* <Text>{ JSON.stringify(this.state.dimmers) }</Text> */}
 								<Text style={styles.kindTitle}>Verlichting</Text>
 								{this.state.switches.map((item, i) => (
-									<>
+									<React.Fragment key={"lights"+i}>
 										{ item.Kind == "0" && 
-											<LightSwitchButton key={"lights"+i} id={item.ID} title={item.Description} active={item.Status} />
+											<LightSwitchButton id={item.ID} title={item.Description} active={item.Status} />
 										}
-									</>
+									</React.Fragment>
 								))}
+
 								<Text style={styles.kindTitle}>Dimmers</Text>
 								{this.state.dimmers.map((item, i) => (
 									<LightDimSlider key={"dimmers"+i} id={item.ID} title={item.Description} value={item.Status} />
 								))}
 								<Text style={styles.kindTitle}>Sturing</Text>
 								{this.state.switches.map((item, i) => (
-									<>
+									<React.Fragment key={"controls"+i}>
 										{ item.Kind == "4" && 
-											<LightSwitchButton key={"controls"+i} id={item.ID} title={item.Description} active={item.Status} />
+											<LightSwitchButton id={item.ID} title={item.Description} active={item.Status} />
 										}
-									</>
+									</React.Fragment>
 								))}
 							</ButtonList>
 						</>
