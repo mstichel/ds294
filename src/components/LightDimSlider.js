@@ -2,7 +2,8 @@ import React from 'react';
 import request from 'superagent';
 import _ from 'lodash';
 
-import { StyleSheet, Text, Slider, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import Slider from '@react-native-community/slider';
 
 export default class LightDimSlider extends React.Component {
 	state = {
