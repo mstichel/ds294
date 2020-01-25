@@ -10,7 +10,13 @@ npx react-native init MyApp
 ```
 Now, let's build IPA and APK of myApp project.
 
-## iOS
+## iOS dev
+**Run the app in the iOS simulator**
+```
+npx react-native run-ios
+```
+
+## Build for iOS
 **Step 1**
 Open iOS project with Xcode using the following simple command from your root folder.
 ```
