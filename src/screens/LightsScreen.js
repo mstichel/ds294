@@ -4,7 +4,7 @@ import ButtonList from '../components/ButtonList';
 import LightSwitchButton from '../components/LightSwitchButton';
 import LightDimSlider from '../components/LightDimSlider';
 import request from 'superagent';
-
+import { EventRegister } from 'react-native-event-listeners';
 
 export default class LightsScreen extends React.Component {
 
@@ -14,38 +14,57 @@ export default class LightsScreen extends React.Component {
 		dimmers: []
 	};
 
-	componentDidMount() {
-		this.loadItems();
+	async componentDidMount() {
+		await this.loadItems();
+		// EventRegister.addEventListener('appForeground', (data) => {
+		// 	await this.loadItems();
+        // });
 	}
 
-	loadItems() {
+	async loadItems() {
 		this.setState({
 			...this.state,
 			loading: true
 		});
 
-		var switches = request
-		    .get('http://10.10.1.1:30200/api/v1/comp/items?types=1')
-		    .then(res => {
-				this.setState({
-					...this.state,
-					switches: res.body
-				});
+		await Promise.all([
+			request
+				.get('http://10.10.1.1:30200/api/v1/comp/items?types=1')
+				.catch(err => { console.log(err); })
+				.then(res => {
+					// console.log("Load switches OK");
+					if( res.body && res.body.length ) {
+						this.setState({
+							...this.state,
+							switches: res.body
+						});
+					}
+					return res;
+				}),
+			request
+				.get('http://10.10.1.1:30200/api/v1/comp/items?types=2')
+				.catch(err => { console.log(err); })
+				.then(res => {
+					// console.log("Load dimmers OK");
+					if( res.body && res.body.length ) {
+						this.setState({
+							...this.state,
+							dimmers: res.body
+						});
+					}
+					return res;
+				})
+		])
+		.then(() => { 
+			this.setState({
+				...this.state,
+				loading: false
 			});
-			
-		var dimmers = request
-		    .get('http://10.10.1.1:30200/api/v1/comp/items?types=2')
-		    .then(res => {
-				this.setState({
-					...this.state,
-					dimmers: res.body
-				});
-			});
-			
-		this.setState({
-			...this.state,
-			loading: false
+		})
+		.catch(err => { 
+			console.log(err);
 		});
+
 	}
 
 	render() {
@@ -55,20 +74,8 @@ export default class LightsScreen extends React.Component {
 					style={styles.container}
 					contentContainerStyle={styles.contentContainer}
 				>
-					<View style={styles.welcomeContainer}>
-						{/* <Image
-							source={
-								__DEV__ ? (
-									require('../assets/images/robot-dev.png')
-								) : (
-									require('../assets/images/robot-prod.png')
-								)
-							}
-							style={styles.welcomeImage}
-						/> */}
-					</View>
 					{this.state.loading ? (
-						<ActivityIndicator animating={this.state.loading} size="large" color="#0000ff" />
+						<ActivityIndicator animating={this.state.loading} size="large" color="#666" style={styles.loader} />
 					) : (
 						<>
 							<ButtonList>
@@ -114,20 +121,11 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: '#fff'
 	},
+	loader: {
+		marginTop: 50,
+	},
 	contentContainer: {
-		
-	},
-	welcomeContainer: {
-		alignItems: 'center',
-		marginTop: 10,
-		// marginBottom: 20
-	},
-	welcomeImage: {
-		width: 100,
-		height: 80,
-		resizeMode: 'contain',
-		marginTop: 3,
-		marginLeft: -10
+		justifyContent: "center"
 	},
 	kindTitle: {
 		width: '100%',
