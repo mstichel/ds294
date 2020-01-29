@@ -39,7 +39,6 @@ export default class App extends React.Component {
 	};
 
 	componentDidMount() {
-		// await loadAsync();
 		AppState.addEventListener('change', this._handleAppStateChange);
 		this.setState({ appReady: true });
 	}
@@ -53,7 +52,7 @@ export default class App extends React.Component {
 			this.state.appState.match(/inactive|background/) &&
 			nextAppState === 'active'
 		) {
-			// EventRegister.emit('appForeground', '');
+			EventRegister.emit('appForeground', '');
 		}
 		this.setState({appState: nextAppState});
 	};

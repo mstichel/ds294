@@ -8,7 +8,7 @@ export default class LightSwitchButton extends React.Component {
 		active: this.props.active || false
 	};
 
-	handleLightToggle = (id) => {
+	_handleLightToggle = (id) => {
 		var req = request
 		    .get('http://10.10.1.1:30200/api/v1/action/action?id='+id+'&actionType=TOGGLE&delayOn=00:00:00&delayOff=00:00:00')
 		    .then(res => {
@@ -33,7 +33,7 @@ export default class LightSwitchButton extends React.Component {
 					styles.lightSwitchButton,
 					this.state.active ? styles.active : styles.inactive
 				]}
-				onPress={() => this.handleLightToggle(this.props.id)}
+				onPress={() => this._handleLightToggle(this.props.id)}
 			>
 				<Text>{this.props.title || 'Untitled'}</Text>
 			</TouchableOpacity>

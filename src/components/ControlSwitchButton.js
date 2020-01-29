@@ -8,7 +8,7 @@ export default class ControlSwitchButton extends React.Component {
 		active: this.props.active || false
 	};
 
-	handleLightToggle = (id) => {
+	_handleControlToggle = (id) => {
 		// var req = request
 		//     .get('http://10.10.1.1:30200/api/v1/action/action?id='+id+'&actionType=TOGGLE&delayOn=00:00:00&delayOff=00:00:00')
 		//     .then(res => {
@@ -18,10 +18,10 @@ export default class ControlSwitchButton extends React.Component {
 		//     console.log("SSID", ssid);
 		// });
 
-		this.setState({ 
-			...this.state,
-            active: !this.state.active
-        });
+		// this.setState({ 
+		// 	...this.state,
+        //     active: !this.state.active
+        // });
 	};
 
 	render() {
@@ -33,7 +33,7 @@ export default class ControlSwitchButton extends React.Component {
 					styles.ControlSwitchButton,
 					this.state.active ? styles.active : styles.inactive
 				]}
-				onPress={() => this.handleLightToggle(this.props.id)}
+				onPress={() => this._handleControlToggle(this.props.id)}
 			>
 				<Text>{this.props.title || 'Untitled'}</Text>
 			</TouchableOpacity>

@@ -2,6 +2,7 @@ import React from 'react';
 import { ActivityIndicator, Image, Platform, ScrollView, StyleSheet, View, Text } from 'react-native';
 import ButtonList from '../components/ButtonList';
 import LightSwitchButton from '../components/LightSwitchButton';
+import ControlSwitchButton from '../components/ControlSwitchButton';
 import LightDimSlider from '../components/LightDimSlider';
 import request from 'superagent';
 import { EventRegister } from 'react-native-event-listeners';
@@ -14,11 +15,11 @@ export default class LightsScreen extends React.Component {
 		dimmers: []
 	};
 
-	async componentDidMount() {
-		await this.loadItems();
-		// EventRegister.addEventListener('appForeground', (data) => {
-		// 	await this.loadItems();
-        // });
+	componentDidMount() {
+		this.loadItems();
+		EventRegister.addEventListener('appForeground', (data) => {
+			this.loadItems();
+        });
 	}
 
 	async loadItems() {
@@ -98,7 +99,7 @@ export default class LightsScreen extends React.Component {
 								{this.state.switches.map((item, i) => (
 									<React.Fragment key={"controls"+i}>
 										{ item.Kind == "4" && 
-											<LightSwitchButton id={item.ID} title={item.Description} active={item.Status} />
+											<ControlSwitchButton id={item.ID} title={item.Description} active={item.Status} />
 										}
 									</React.Fragment>
 								))}

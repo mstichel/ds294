@@ -17,7 +17,7 @@ export default class LightDimSlider extends React.Component {
 		});
 	}
 
-	handleValueChange = (value) => {
+	_handleValueChange = (value) => {
         var dimStatus = ~~(value * 100);
 
 		var req = request
@@ -41,7 +41,7 @@ export default class LightDimSlider extends React.Component {
 		return (
 			<View style={styles.container}>
 				<Text>{this.props.title}</Text>
-				<Slider {...this.props} value={this.state.value} onValueChange={_.debounce(this.handleValueChange, 300)} />
+				<Slider {...this.props} value={this.state.value} onValueChange={_.debounce(this._handleValueChange, 300)} />
 			</View>
 		);
 	}
